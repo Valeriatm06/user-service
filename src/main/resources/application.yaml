@@ -1,0 +1,12 @@
+app:
+  storage:
+    path: data
+    file: database_users.txt
+    backup-enabled: true
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: UserServiceers.txt

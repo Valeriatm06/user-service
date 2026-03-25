@@ -1,0 +1,58 @@
+package co.edu.uptc.user_service.service;
+
+import co.edu.uptc.user_service.dto.UserDTO;
+import co.edu.uptc.user_service.model.User;
+import co.edu.uptc.user_service.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    // Traemos el puerto en el que está corriendo la app
+    @Value("${app.server.mark:Servidor Desconocido - Usuarios}")
+    private String serverMark;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public UserDTO saveUser(UserDTO request) {
+        User user = new User();
+        user.setName(request.getName());
+        user.setLastName(request.getLastName());
+        user.setAge(request.getAge());
+
+        User savedUser = userRepository.save(user);
+
+        // Devolvemos el usuario guardado, pasándolo por el convertidor
+        return convertToDTO(savedUser);
+    }
+
+    public List<UserDTO> getAll() {
+        return userRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private UserDTO convertToDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setName(user.getName());
+        dto.setLastName(user.getLastName());
+        dto.setAge(user.getAge());
+        dto.setServerMark(serverMark);
+        try {
+            dto.setServerIp(java.net.InetAddress.getLocalHost().getHostAddress());
+        } catch (Exception e) {
+            dto.setServerIp("IP Desconocida");
+        }
+        return dto;
+    }
+}
