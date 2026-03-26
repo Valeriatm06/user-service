@@ -16,7 +16,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Traemos el puerto en el que está corriendo la app
     @Value("${app.server.mark:Servidor Desconocido - Usuarios}")
     private String serverMark;
 
@@ -32,7 +31,6 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        // Devolvemos el usuario guardado, pasándolo por el convertidor
         return convertToDTO(savedUser);
     }
 

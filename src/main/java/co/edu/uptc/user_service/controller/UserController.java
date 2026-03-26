@@ -19,13 +19,11 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO request) {
-        // userService ya devuelve el DTO con la IP y la marca incluidas
         return ResponseEntity.ok(userService.saveUser(request));
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> listAll() {
-        // userService ya devuelve la lista con las IPs y marcas incluidas
         return ResponseEntity.ok(userService.getAll());
     }
 }
