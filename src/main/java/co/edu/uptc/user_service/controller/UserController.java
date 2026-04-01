@@ -2,6 +2,7 @@ package co.edu.uptc.user_service.controller;
 
 import co.edu.uptc.user_service.dto.UserDTO;
 import co.edu.uptc.user_service.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> listAll() {
-        return ResponseEntity.ok(userService.getAll());
+    public ResponseEntity<Page<UserDTO>> listAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(userService.getAll(page, size));
     }
 }

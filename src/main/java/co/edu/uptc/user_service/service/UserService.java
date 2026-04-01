@@ -4,6 +4,9 @@ import co.edu.uptc.user_service.dto.UserDTO;
 import co.edu.uptc.user_service.model.User;
 import co.edu.uptc.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
@@ -34,10 +37,10 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
-    public List<UserDTO> getAll() {
-        return userRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<UserDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        // userRepository.findAll(pageable) hace la magia de traer solo la porción necesaria
+        return userRepository.findAll(pageable).map(this::convertToDTO);
     }
 
     private UserDTO convertToDTO(User user) {
