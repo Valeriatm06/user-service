@@ -39,7 +39,6 @@ public class UserService {
 
     public Page<UserDTO> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        // userRepository.findAll(pageable) hace la magia de traer solo la porción necesaria
         return userRepository.findAll(pageable).map(this::convertToDTO);
     }
 
